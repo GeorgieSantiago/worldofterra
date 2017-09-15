@@ -160,22 +160,6 @@ var init = function () {
 
     game.state.add('Boot', BasicGame.Boot);
     game.state.start('Boot');
-
-
-
-    function over() {
-        console.log('button over');
-    }
-
-    function out() {
-        console.log('button out');
-    }
-
-    function actionOnClick() {
-
-        background.visible = !background.visible;
-
-    }
 }
 
 window.onload = init;
