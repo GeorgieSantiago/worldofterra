@@ -1,0 +1,92 @@
+{"frames": [
+
+{
+	"filename": "brickpavers.png",
+	"frame": {"x":0,"y":1024,"w":512,"h":256},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":512,"h":256},
+	"sourceSize": {"w":512,"h":256}
+},
+{
+	"filename": "concrete368.png",
+	"frame": {"x":0,"y":128,"w":256,"h":128},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":256,"h":128},
+	"sourceSize": {"w":256,"h":128}
+},
+{
+	"filename": "cretebrick.png",
+	"frame": {"x":0,"y":1536,"w":512,"h":256},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":512,"h":256},
+	"sourceSize": {"w":512,"h":256}
+},
+{
+	"filename": "dirt.png",
+	"frame": {"x":0,"y":0,"w":256,"h":128},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":256,"h":128},
+	"sourceSize": {"w":256,"h":128}
+},
+{
+	"filename": "dirtsand2.png",
+	"frame": {"x":0,"y":1280,"w":512,"h":256},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":512,"h":256},
+	"sourceSize": {"w":512,"h":256}
+},
+{
+	"filename": "grass_dark.png",
+	"frame": {"x":0,"y":512,"w":512,"h":256},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":512,"h":256},
+	"sourceSize": {"w":512,"h":256}
+},
+{
+	"filename": "grass_light.png",
+	"frame": {"x":0,"y":256,"w":512,"h":256},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":512,"h":256},
+	"sourceSize": {"w":512,"h":256}
+},
+{
+	"filename": "rock.png",
+	"frame": {"x":256,"y":0,"w":256,"h":128},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":256,"h":128},
+	"sourceSize": {"w":256,"h":128}
+},
+{
+	"filename": "snow.png",
+	"frame": {"x":256,"y":128,"w":256,"h":128},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":256,"h":128},
+	"sourceSize": {"w":256,"h":128}
+},
+{
+	"filename": "stone.png",
+	"frame": {"x":0,"y":768,"w":512,"h":256},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":512,"h":256},
+	"sourceSize": {"w":512,"h":256}
+}],
+"meta": {
+	"app": "http://www.codeandweb.com/texturepacker",
+	"version": "1.0",
+	"image": "tiles.png",
+	"format": "RGBA8888",
+	"size": {"w":512,"h":1792},
+	"scale": "1",
+	"smartupdate": "$TexturePacker:SmartUpdate:653b0d56cd5e42e57d6ed5998527678c:d29ee041a9e223e772ec604dfe4abd63:accbe1e7e294ded8391337fc1c446319$"
+}
+}
