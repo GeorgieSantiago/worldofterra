@@ -226,6 +226,13 @@ var init = function() {
 
   game.state.add('Boot', BasicGame.Boot);
   game.state.start('Boot');
+  function resizeGame() {
+      game.scale.setGameSize($( window ).width(), $( window ).height());
+  }
+
+  $( window ).resize(function() {
+      resizeGame();
+  });
 }
 
 window.onload = init;

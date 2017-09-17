@@ -8,7 +8,9 @@
  */
 class Person {
 
-
+  firstName:string;
+  lastName:string;
+  parents:Parent[];
   /**
    * constructor - build a person
    *
@@ -20,9 +22,7 @@ class Person {
     this.firstName = firstName;
     this.lastName = lastName;
 
-    /**
-     * @type {Parent[]} parent  description
-     */
+
      this.parents = [];
   }
 
@@ -38,7 +38,7 @@ class Person {
  */
 class Parent extends Person {
 
-
+  children:Person[]; 
   /**
    * constructor - build a parent
    *
@@ -57,7 +57,6 @@ class Parent extends Person {
       child.printName();
     });
 
-    // this.parents.printName();
   }
 
 }
