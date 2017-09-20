@@ -9,7 +9,7 @@ var height = window.innerHeight;
 //setup froups for tiles and objects
 var floorGroup;
 var itemGroup;
-var playerGroup;
+var grassGroup;
 var obstacleGroup;
 
 // declare variables
@@ -19,220 +19,226 @@ var background;
 var cursors;
 var debugTxt;
 var debugOutput;
-
-let debug = false;
+var jumpButton;
 
 // for debug, we declare this outside of init so we can call it from the browser console more easily
 var game = {};
 
-var init = function() {
+var init = function () {
 
-  // create game object
-  game = new Phaser.Game(
-    width, height, // these are obvious
-    Phaser.AUTO, // let Phaser decide which renderer to use, more browser friendly
-    '', // specify a DOM element, but I'm not using right now. TODO: Find out if this has an impact on non-HTML5 browsers
-    null, // set game state, I'm not doing this here. I create a Basic Game a few lines down
-    false, // transparent
-    true // anti-aliasing. This smooths texture, set to false for pixel art
-  );
+    // create game object
+    game = new Phaser.Game(
+        width, height, // these are obvious
+        Phaser.AUTO, // let Phaser decide which renderer to use, more browser friendly
+        '', // specify a DOM element, but I'm not using right now. TODO: Find out if this has an impact on non-HTML5 browsers
+        null, // set game state, I'm not doing this here. I create a Basic Game a few lines down
+        false, // transparent
+        true // anti-aliasing. This smooths texture, set to false for pixel art
+    );
 
-  var BasicGame = (game) => {};
-  BasicGame.Boot = (game) => {};
+    var BasicGame = function (game) {};
+    BasicGame.Boot = function (game) {};
 
-  BasicGame.Boot.prototype = {
-    preload() {
-      // player character is currently a circle
-      game.load.image('circle', 'assets/simple.png');
-      game.load.image('rock', 'assets/rock.png');
+    BasicGame.Boot.prototype = {
+        preload() {
+            // player character is currently a circle
+            // game.load.image('circle', 'assets/simple.png');
 
-      // tiles are in a tile atlas created with https://www.codeandweb.com/texturepacker
-      // with an texture pack from https://opengameart.org/content/isometric-tile-starter-pack
-      game.load.atlas('tiles', 'assets/tiles.png', 'assets/tiles.json');
+            // tiles are in a tile atlas created with https://www.codeandweb.com/texturepacker
+            // with an texture pack from https://opengameart.org/content/isometric-tile-starter-pack
+            game.load.atlas('tiles', 'assets/tiles.png', 'assets/tiles.json');
+            game.load.atlas('iso_tiles', 'assets/iso_tiles.png', 'assets/iso_tiles.json');
+            game.load.atlas('obstacles', 'assets/obstacles.png', 'assets/obstacles.json');
 
-      game.time.advancedTiming = true;
+            // Isometric plugin from http://rotates.org/phaser/iso/
+            game.add.plugin(new Phaser.Plugin.Isometric(game));
 
-      // Isometric plugin from http://rotates.org/phaser/iso/
-      game.add.plugin(new Phaser.Plugin.Isometric(game));
+            // Set the world size
+            game.world.setBounds(0, 0, 8192, 8192);
 
-      // Set the world size
-      game.world.setBounds(0, 0, 4096, 2048);
+            // Start the physical system
+            game.physics.startSystem(Phaser.Plugin.Isometric.ISOARCADE);
 
-      // Start the physical system
-      game.physics.startSystem(Phaser.Plugin.Isometric.ISOARCADE);
+            // set the middle of the world in the middle of the screen
+            game.iso.anchor.setTo(0.5, 0);
 
-      // set the middle of the world in the middle of the screen
-      game.iso.anchor.setTo(0.5, 0);
-    },
-    create() {
-      // set the Background color of our game
-      game.stage.backgroundColor = "0x000000";
+            this.levelTiles;
+            $.get('assets/iso_map.json').done(data=>this.levelTiles = data);
 
-      // create groups for different tiles
-      floorGroup = game.add.group();
-      obstacleGroup = game.add.group();
-      itemGroup = game.add.group();
-      playerGroup = game.add.group();
-      game.physics.isoArcade.enable(obstacleGroup);
+        },
+        create() {
+            // set the Background color of our game
+            game.stage.backgroundColor = "0x000000";
 
-      // set the gravity in our game
-      game.physics.isoArcade.gravity.setTo(0, 0, -500);
+            // create groups for different tiles
+            floorGroup = game.add.group();
+            itemGroup = game.add.group();
+            grassGroup = game.add.group();
+            obstacleGroup = game.add.group();
 
-      var tilesCache = game.cache.getImage('tiles', true);
-      var tilesData = tilesCache.frameData;
-      var floorSpriteName = 'snow.png';
-      var floorTileIndex = tilesData._frameNames[floorSpriteName];
-      var floorSprite = tilesData._frames[floorTileIndex];
-      var floorWidth = Math.floor(game.world.width / floorSprite.width);
-      var floorHeight = Math.floor(game.world.height / floorSprite.height);
+            // set the gravity in our game
+            game.physics.isoArcade.gravity.setTo(0, 0, -500);
 
-      //create the floor tiles
-      var floorTile;
-      for (let x = floorWidth; x >= 0; x--) {
-        for (let y = floorHeight; y >= 0; y--) {
+            // create the floor tiles
+            var floorTile;
+            var tileName;
+            var tile;
+            for (var xt = this.levelTiles.width-1; xt >= 0; xt --) {
+                for (var yt = this.levelTiles.height-1; yt >= 0; yt --) {
+                  tile = this.levelTiles.layers[0].data[xt+yt*this.levelTiles.height];
+                    switch(tile){
+                      case 0:
+                        // empty tile, do not render
+                        continue;
+                      case 1: case 5: tileName = 'concrete_tile'; break;
+                      case 2: tileName = 'dirt_tile'; break;
+                      case 3: tileName = 'rock_tile'; break;
+                      case 4: tileName = 'snow_tile'; break;
+                    }
 
-          floorTile = game.add.isoSprite(
-            // because we are using isometrics, we use the height to space the tiles
-            x*floorSprite.height, y*floorSprite.height, 0, // x,y,z
-            'tiles', // atlas
-            floorSpriteName, // sprite in atlas
-            floorGroup // group to place the tile
-          );
-          // sets the anchor point of the sprite to the center of x and y
-          floorTile.anchor.set(0.5);
+                    floorTile = game.add.isoSprite(
+                        //
+                        xt*this.levelTiles.tilewidth/2 + 64, yt*this.levelTiles.tilewidth/2 + 64, 0, // x,y,z
+                        'tiles', // atlas
+                        tileName, // sprite in atlas
+                        floorGroup // group to place the tile
+                    );
+                    // sets the anchor point of the sprite to the center of x and y
+                    floorTile.anchor.set(0.5);
 
-        }
-      }
+                }
+            }
 
-      //create the maze tiles
-      var maze = new Maze(20, 20, 100, 100, true);
-      maze.generate();
-      if(debug){
-        maze.printGrid();
-      }
+            var obstacleTile;
+            for (var xt = this.levelTiles.width-1; xt >= 0; xt --) {
+                for (var yt = this.levelTiles.height-1; yt >= 0; yt --) {
+                  tile = this.levelTiles.layers[1].data[xt+yt*this.levelTiles.height];
+                    switch(tile){
+                      case 0:
+                        // empty tile, do not render
+                        continue;
+                      case 5: tileName = 'cube.png'; break;
+                      case 6: tileName = 'rock_large.png'; break;
+                    }
+                    // console.log(xt*this.levelTiles.tileHeight);
+                    obstacleTile = game.add.isoSprite(
+                        xt*this.levelTiles.tilewidth/2, yt*this.levelTiles.tileheight, 0, // x,y,z
+                        'obstacles', // atlas
+                        tileName, // sprite in atlas
+                        obstacleGroup // group to place the tile
+                    );
+                    // sets the anchor point of the sprite to the center of x and y
+                    obstacleTile.anchor.set(0.5);
+                    // sets the anchor point of the sprite to the center of x and y
+                    obstacleTile.anchor.set(0.5);
 
-      var rockSprite = game.cache.getImage('rock', true);
-      // decrease the distance between rocks so they player doesn't fit between
-      var rockHeight = rockSprite.data.height / 1.75;
-      var obstacleTile;
-      for (var xt = maze.grid.length-1; xt >= 0; xt--) {
-        for (var yt = maze.grid[xt].length-1; yt >= 0; yt--) {
-          if (maze.grid[xt][yt].wall) {
-            obstacleTile = game.add.isoSprite(
-              xt * rockHeight+maze.x, yt * rockHeight+maze.y, 0, // x,y,z
-              'rock', // atlas
-              '', // sprite in atlas
-              obstacleGroup // group to place the tile
-            );
+                    // Let the physics engine do its job on this tile type
+                    game.physics.isoArcade.enable(obstacleTile);
+
+                    // This will prevent our physic bodies from going out of the screen
+                    obstacleTile.body.collideWorldBounds = true;
+
+                    // Make the cactus body immovable
+                    obstacleTile.body.immovable = true;
+
+                }
+            }
+
+            // create the player character
+            player = game.add.isoSprite(200, 200, 0, 'tiles', 'simple', obstacleGroup);
+
             // sets the anchor point of the sprite to the center of x and y
-            obstacleTile.anchor.set(0.5);
+            player.anchor.set(0.5);
+            // enable physics
+            game.physics.isoArcade.enable(player);
+            // stop the player at the edge of the world
+            player.body.collideWorldBounds = true;
 
-            // Let the physics engine do its job on this tile type
-            game.physics.isoArcade.enable(obstacleTile);
+            player.isJumping = false;
+            player.lastZ = 0;
 
-            // This will prevent our physic bodies from going out of the screen
-            obstacleTile.body.collideWorldBounds = true;
+            // set player to "world's center", similar to many RPGs
+            game.camera.follow(player);
 
-            // Make the cactus body immovable
-            obstacleTile.body.immovable = true;
+            // keyboard controls
+            cursors = game.input.keyboard.createCursorKeys();
+            jumpButton = game.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR);
+            // TODO: handle other controls like touch and controller
 
-            // Add a full bounce on the x and y axes, and a bit on the z axis.
-            obstacleTile.body.bounce.set(1, 1, 0.2);
+            // debug text for testing
+            debugTxt = game.add.text(8, 8, debugOutput, {
+                font: "16px Arial",
+                fill: "#ffffff",
+                align: "left"
+            });
 
-            // Add some X and Y drag to make cubes slow down after being pushed.
-            obstacleTile.body.drag.set(100, 100, 0);
-          }
+            // lock text to screen, or we'll lose it as the camera moves
+            debugTxt.fixedToCamera = true;
 
+            jumpButton.onDown.add(function () {
+              // BUG: Cannot jump when travelling north west
+              if(!player.isJumping)
+                player.body.velocity.z = 500;
+            }, this);
+        },
+        update() {
+
+            // arbitrary speed that I liked how it looked as the circle moved around
+            var speed = 500;
+            if (cursors.left.isDown && cursors.up.isDown) {
+                player.body.velocity.x = -speed;
+                player.body.velocity.y = 0;
+            } else if (cursors.left.isDown && cursors.down.isDown) {
+                player.body.velocity.x = 0;
+                player.body.velocity.y = speed;
+            } else if (cursors.up.isDown && cursors.right.isDown) {
+                player.body.velocity.y = -speed;
+                player.body.velocity.x = 0;
+            } else if (cursors.down.isDown && cursors.right.isDown) {
+                player.body.velocity.y = 0;
+                player.body.velocity.x = speed;
+            } else if (cursors.left.isDown) {
+                player.body.velocity.x = -(speed * Math.sqrt(2) / 2);   // Pythagorean Theorem.
+                player.body.velocity.y = (speed * Math.sqrt(2) / 2);    // Visually, up/down/left/right is north/south/west/east
+            } else if (cursors.right.isDown) {                          //
+                player.body.velocity.x = (speed * Math.sqrt(2) / 2);    // But, we can move in 8 directions
+                player.body.velocity.y = -(speed * Math.sqrt(2) / 2);   //
+            } else if (cursors.up.isDown) {                             // So, if the player is moving diagonally at the same speed
+                player.body.velocity.y = -(speed * Math.sqrt(2) / 2);   // it would move vertically or horizontally, it is moving
+                player.body.velocity.x = -(speed * Math.sqrt(2) / 2);   // faster at those angles. Therefore, if we solve for the
+            } else if (cursors.down.isDown) {                           // hypotenuse of the triangle of movement, with speed as
+                player.body.velocity.y = (speed * Math.sqrt(2) / 2);    // our sides, the hypotenuse is twice the speed we set,
+                player.body.velocity.x = (speed * Math.sqrt(2) / 2);    // so we cut it in half and the net velocity is always the same
+            } else {                                                    //
+                player.body.velocity.x = 0;                             // TODO: When configuring controllers, consider percentage of
+                player.body.velocity.y = 0;                             // movement for the analog stick
+            }
+
+            player.isJumping = player.lastZ != player.body.z;
+            player.lastZ = player.body.z;
+            game.physics.isoArcade.collide(obstacleGroup,player, null,  null, this);
+            game.iso.topologicalSort(obstacleGroup);
+
+            // build debug string
+            debugOutput = 'Velocity: ' + (player.body.velocity.x).toFixed(2) + ', ' + (player.body.velocity.y).toFixed(2);
+            debugOutput += '\nTotal: ' + (Math.hypot(player.body.velocity.x, player.body.velocity.y)).toFixed(2);
+            debugOutput += `\nZ position: ${player.body.z}`;
+            debugOutput += `\nJumping: ${player.isJumping}`;
+
+            // display debug string
+            debugTxt.setText(debugOutput);
         }
-      }
-
-      // create the player character
-      player = game.add.isoSprite(0, 0, 0, 'circle', 0, obstacleGroup);
-
-      // sets the anchor point of the sprite to the center of x and y
-      player.anchor.set(0.5);
-      // enable physics
-      game.physics.isoArcade.enable(player);
-      // stop the player at the edge of the world
-      player.body.collideWorldBounds = true;
-
-      // set player to "world's center", similar to many RPGs
-      // game.camera.follow(player);
-      game.camera.follow(player, Phaser.Camera.FOLLOW_LOCKON);
-
-      // keyboard controls
-      cursors = game.input.keyboard.createCursorKeys();
-      // TODO: handle other controls like touch and controller
-
-      // debug text for testing
-      debugTxt = game.add.text(8, 8, debugOutput, {
-        font: "16px Arial",
-        fill: "#ffffff",
-        align: "left"
-      });
-
-      // lock text to screen, or we'll lose it as the camera moves
-      debugTxt.fixedToCamera = true;
-    },
-    update() {
-
-      // arbitrary speed that I liked how it looked as the circle moved around
-      var speed = 500;
-      if (cursors.left.isDown && cursors.up.isDown) {
-        player.body.velocity.x = -speed;
-        player.body.velocity.y = 0;
-      } else if (cursors.left.isDown && cursors.down.isDown) {
-        player.body.velocity.x = 0;
-        player.body.velocity.y = speed;
-      } else if (cursors.up.isDown && cursors.right.isDown) {
-        player.body.velocity.y = -speed;
-        player.body.velocity.x = 0;
-      } else if (cursors.down.isDown && cursors.right.isDown) {
-        player.body.velocity.y = 0;
-        player.body.velocity.x = speed;
-      } else if (cursors.left.isDown) {
-        player.body.velocity.x = -(speed * Math.sqrt(2) / 2); // Pythagorean Theorem.
-        player.body.velocity.y = (speed * Math.sqrt(2) / 2); // Visually, up/down/left/right is north/south/west/east
-      } else if (cursors.right.isDown) { //
-        player.body.velocity.x = (speed * Math.sqrt(2) / 2); // But, we can move in 8 directions
-        player.body.velocity.y = -(speed * Math.sqrt(2) / 2); //
-      } else if (cursors.up.isDown) { // So, if the player is moving diagonally at the same speed
-        player.body.velocity.y = -(speed * Math.sqrt(2) / 2); // it would move vertically or horizontally, it is moving
-        player.body.velocity.x = -(speed * Math.sqrt(2) / 2); // faster at those angles. Therefore, if we solve for the
-      } else if (cursors.down.isDown) { // hypotenuse of the triangle of movement, with speed as
-        player.body.velocity.y = (speed * Math.sqrt(2) / 2); // our sides, the hypotenuse is twice the speed we set,
-        player.body.velocity.x = (speed * Math.sqrt(2) / 2); // so we cut it in half and the net velocity is always the same
-      } else { //
-        player.body.velocity.x = 0; // TODO: When configuring controllers, consider percentage of
-        player.body.velocity.y = 0; // movement for the analog stick
-      }
-
-      //console.log(
-        game.physics.isoArcade.collide(obstacleGroup,player, (a,b)=>{
-        // console.log(a);
-        // console.log(b);
-      }, null, this)
-    //);
-      game.iso.topologicalSort(obstacleGroup);
-
-      // build debug string
-      debugOutput = 'Velocity: ' + (player.body.velocity.x).toFixed(2) + ', ' + (player.body.velocity.y).toFixed(2);
-      debugOutput += '\nTotal: ' + (Math.hypot(player.body.velocity.x, player.body.velocity.y)).toFixed(2);
-
-      // display debug string
-      debugTxt.setText(debugOutput);
     }
-  }
 
-  game.state.add('Boot', BasicGame.Boot);
-  game.state.start('Boot');
-  function resizeGame() {
-      game.scale.setGameSize($( window ).width(), $( window ).height());
-  }
+    game.state.add('Boot', BasicGame.Boot);
+    game.state.start('Boot');
+    function resizeGame() {
+        game.scale.setGameSize($( window ).width(), $( window ).height());
+    }
 
-  $( window ).resize(function() {
-      resizeGame();
-  });
+    $( window ).resize(function() {
+        resizeGame();
+    });
 }
 
 window.onload = init;

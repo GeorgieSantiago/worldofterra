@@ -1,92 +1,180 @@
 {"frames": [
 
 {
-	"filename": "brickpavers.png",
-	"frame": {"x":0,"y":1024,"w":512,"h":256},
+	"filename": "brickpavers_tile",
+	"frame": {"x":0,"y":684,"w":512,"h":256},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":512,"h":256},
 	"sourceSize": {"w":512,"h":256}
 },
 {
-	"filename": "concrete368.png",
-	"frame": {"x":0,"y":128,"w":256,"h":128},
+	"filename": "concrete_tile",
+	"frame": {"x":256,"y":300,"w":256,"h":128},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":256,"h":128},
 	"sourceSize": {"w":256,"h":128}
 },
 {
-	"filename": "cretebrick.png",
-	"frame": {"x":0,"y":1536,"w":512,"h":256},
+	"filename": "cretebrick_tile",
+	"frame": {"x":512,"y":684,"w":512,"h":256},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":512,"h":256},
 	"sourceSize": {"w":512,"h":256}
 },
 {
-	"filename": "dirt.png",
-	"frame": {"x":0,"y":0,"w":256,"h":128},
+	"filename": "dirt_tile",
+	"frame": {"x":512,"y":300,"w":256,"h":128},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":256,"h":128},
 	"sourceSize": {"w":256,"h":128}
 },
 {
-	"filename": "dirtsand2.png",
-	"frame": {"x":0,"y":1280,"w":512,"h":256},
+	"filename": "dirtsand_tile",
+	"frame": {"x":512,"y":940,"w":512,"h":256},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":512,"h":256},
 	"sourceSize": {"w":512,"h":256}
 },
 {
-	"filename": "grass_dark.png",
-	"frame": {"x":0,"y":512,"w":512,"h":256},
+	"filename": "down_button",
+	"frame": {"x":300,"y":150,"w":150,"h":150},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":150,"h":150},
+	"sourceSize": {"w":150,"h":150}
+},
+{
+	"filename": "down_left_button",
+	"frame": {"x":150,"y":150,"w":150,"h":150},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":150,"h":150},
+	"sourceSize": {"w":150,"h":150}
+},
+{
+	"filename": "down_right_button",
+	"frame": {"x":628,"y":0,"w":150,"h":150},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":150,"h":150},
+	"sourceSize": {"w":150,"h":150}
+},
+{
+	"filename": "empty_button",
+	"frame": {"x":778,"y":0,"w":150,"h":150},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":150,"h":150},
+	"sourceSize": {"w":150,"h":150}
+},
+{
+	"filename": "grass_dark_tile",
+	"frame": {"x":0,"y":940,"w":512,"h":256},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":512,"h":256},
 	"sourceSize": {"w":512,"h":256}
 },
 {
-	"filename": "grass_light.png",
-	"frame": {"x":0,"y":256,"w":512,"h":256},
+	"filename": "grass_light_tile",
+	"frame": {"x":512,"y":428,"w":512,"h":256},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":512,"h":256},
 	"sourceSize": {"w":512,"h":256}
 },
 {
-	"filename": "rock.png",
-	"frame": {"x":256,"y":0,"w":256,"h":128},
+	"filename": "left_button",
+	"frame": {"x":328,"y":0,"w":150,"h":150},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":150,"h":150},
+	"sourceSize": {"w":150,"h":150}
+},
+{
+	"filename": "right_button",
+	"frame": {"x":478,"y":0,"w":150,"h":150},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":150,"h":150},
+	"sourceSize": {"w":150,"h":150}
+},
+{
+	"filename": "rock",
+	"frame": {"x":50,"y":0,"w":128,"h":128},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":128,"h":128},
+	"sourceSize": {"w":128,"h":128}
+},
+{
+	"filename": "rock_tile",
+	"frame": {"x":600,"y":150,"w":256,"h":128},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":256,"h":128},
 	"sourceSize": {"w":256,"h":128}
 },
 {
-	"filename": "snow.png",
-	"frame": {"x":256,"y":128,"w":256,"h":128},
+	"filename": "simple",
+	"frame": {"x":0,"y":0,"w":50,"h":50},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":50,"h":50},
+	"sourceSize": {"w":50,"h":50}
+},
+{
+	"filename": "snow_tile",
+	"frame": {"x":0,"y":300,"w":256,"h":128},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":256,"h":128},
 	"sourceSize": {"w":256,"h":128}
 },
 {
-	"filename": "stone.png",
-	"frame": {"x":0,"y":768,"w":512,"h":256},
+	"filename": "stone_tile",
+	"frame": {"x":0,"y":428,"w":512,"h":256},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":512,"h":256},
 	"sourceSize": {"w":512,"h":256}
+},
+{
+	"filename": "up_button",
+	"frame": {"x":450,"y":150,"w":150,"h":150},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":150,"h":150},
+	"sourceSize": {"w":150,"h":150}
+},
+{
+	"filename": "up_left_button",
+	"frame": {"x":0,"y":150,"w":150,"h":150},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":150,"h":150},
+	"sourceSize": {"w":150,"h":150}
+},
+{
+	"filename": "up_right_button",
+	"frame": {"x":178,"y":0,"w":150,"h":150},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":150,"h":150},
+	"sourceSize": {"w":150,"h":150}
 }],
 "meta": {
 	"app": "http://www.codeandweb.com/texturepacker",
 	"version": "1.0",
-	"image": "tiles.png",
+	"image": "tiles",
 	"format": "RGBA8888",
-	"size": {"w":512,"h":1792},
+	"size": {"w":1024,"h":1196},
 	"scale": "1",
-	"smartupdate": "$TexturePacker:SmartUpdate:653b0d56cd5e42e57d6ed5998527678c:d29ee041a9e223e772ec604dfe4abd63:accbe1e7e294ded8391337fc1c446319$"
+	"smartupdate": "$TexturePacker:SmartUpdate:c561b861476c5d974ff5effa042277ef:7348142298b185f8040107b4067248b2:accbe1e7e294ded8391337fc1c446319$"
 }
 }
